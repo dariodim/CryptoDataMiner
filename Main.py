@@ -14,7 +14,8 @@ CoinList = pd.DataFrame(CoinGecko_API.CoingeckoAPI(CoinList_CALL).get_coingecko_
 
 MainData = pd.DataFrame(columns=['Date', 'Time', 'Id', 'Name', 'Symbol', 'Description', 'GenesisDate'])
 
-for i in range(0,NumberOfInstruments):
+# Loop through top instruments
+for i in range(0,NumberOfInstruments-1):
 
     # Parse full information about instrument
     CoinInformation_CALL = 'https://api.coingecko.com//api/v3/coins/' + CoinList['id'][i]

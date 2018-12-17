@@ -1,9 +1,22 @@
 import pandas as pd
 import datetime as datetime
 import Libraries.CoinGecko as CoinGecko_API
+import Libraries.ConfigReader as ConfigurationReader
+import Libraries.DBConnector as DBInteraction
+
+# Import Config Parameters
+data = ConfigurationReader.ConfigReader('Config.json').read_config()
+
+# Connect to Database
+DBInteraction.PostgreSQL.ConnectToDB('test', data['PostgreSQL']['user'], data['PostgreSQL']['password'], data['PostgreSQL']['host'], data['PostgreSQL']['port'], data['PostgreSQL']['database'], """SELECT * FROM "Schema"."Securities";""")
+
+
+# Disconnect from Database
+
+
 
 # Paramenters
-NumberOfInstruments = 50
+NumberOfInstruments = 10
 
 # Sorting
 SortingMethod = 'market_cap_desc'

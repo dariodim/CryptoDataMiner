@@ -1,0 +1,9 @@
+{
+    "PostgreSQL":{
+        "user":"tpklbgzmilhfdi",
+        "password":"65df6baa2326803ef95934dd21b5aaaf038c8b60e8ccfd0626e5648fbd70ed96",
+        "host":"ec2-54-217-223-175.eu-west-1.compute.amazonaws.com",
+        "port":"5432",
+        "database":"d2f093f4kh6150"
+    }
+}

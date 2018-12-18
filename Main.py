@@ -5,13 +5,10 @@ import Libraries.ConfigReader as ConfigurationReader
 import Libraries.DBConnector as DBInteraction
 
 # Import Config Parameters
-data = ConfigurationReader.ConfigReader('Config.json').read_config()
+ConfigData = ConfigurationReader.ConfigReader('Config.json').read_config()
 
-# Connect to Database
-DBInteraction.PostgreSQL.ConnectToDB('test', data['PostgreSQL']['user'], data['PostgreSQL']['password'], data['PostgreSQL']['host'], data['PostgreSQL']['port'], data['PostgreSQL']['database'], """SELECT * FROM "Schema"."Securities";""")
-
-
-# Disconnect from Database
+# Connect to Database & Pass Instructions
+DBInteraction.PostgreSQL().ConnectToDB(ConfigData['PostgreSQL']['user'], ConfigData['PostgreSQL']['password'], ConfigData['PostgreSQL']['host'], ConfigData['PostgreSQL']['port'], ConfigData['PostgreSQL']['database'], """SELECT * FROM "Schema"."Securities";""")
 
 
 
@@ -53,3 +50,10 @@ for i in range(0,NumberOfInstruments-1):
     MainData.loc[len(MainData)+1] = [pd.datetime.now().strftime("%Y-%m-%d"), pd.datetime.now().strftime("%H:%M:%S"), Id, Name, Symbol, Description, GenesisDate]
 
 print(MainData)
+
+def SQL_INSERT_STATEMENT_FROM_DATAFRAME(SOURCE, TARGET):
+    sql_texts = []
+    for index, row in SOURCE.iterrows():       
+        sql_texts.append('INSERT INTO '+TARGET+' ('+ str(', '.join(SOURCE.columns))+ ') VALUES '+ str(tuple(row.values)))
+    
+    return sql_texts

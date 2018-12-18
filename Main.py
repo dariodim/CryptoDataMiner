@@ -22,17 +22,17 @@ SortingMethod = 'market_cap_desc'
 CoinList_CALL = 'https://api.coingecko.com/api/v3/coins?order=?' + SortingMethod
 CoinList = pd.DataFrame(CoinGecko_API.CoingeckoAPI(CoinList_CALL).get_coingecko_data())
 
-MainData = pd.DataFrame(columns=['Date', 'Time', 'Id', 'Name', 'Symbol', 'Description', 'GenesisDate'])
+MainData = pd.DataFrame(columns=['Date', 'Time', 'ExternalId', 'Name', 'Symbol', 'Description', 'GenesisDate'])
 
 # Loop through top instruments
-for i in range(0,NumberOfInstruments-1):
+for i in range(0,NumberOfInstruments):
 
     # Parse full information about instrument
     CoinInformation_CALL = 'https://api.coingecko.com//api/v3/coins/' + CoinList['id'][i]
     CoinInformation = CoinGecko_API.CoingeckoAPI(CoinInformation_CALL).get_coingecko_data()
 
     # Id of instrument
-    Id = CoinInformation['id']
+    ExternalId = CoinInformation['id']
 
     # Name of instrument
     Name = CoinInformation['name']
@@ -47,7 +47,7 @@ for i in range(0,NumberOfInstruments-1):
     GenesisDate = CoinInformation['genesis_date']
 
     # Add data to Main Table
-    MainData.loc[len(MainData)+1] = [pd.datetime.now().strftime("%Y-%m-%d"), pd.datetime.now().strftime("%H:%M:%S"), Id, Name, Symbol, Description, GenesisDate]
+    MainData.loc[len(MainData)+1] = [pd.datetime.now().strftime("%Y-%m-%d"), pd.datetime.now().strftime("%H:%M:%S"), ExternalId, Name, Symbol, Description, GenesisDate]
 
 print(MainData)
 
@@ -55,5 +55,6 @@ def SQL_INSERT_STATEMENT_FROM_DATAFRAME(SOURCE, TARGET):
     sql_texts = []
     for index, row in SOURCE.iterrows():       
         sql_texts.append('INSERT INTO '+TARGET+' ('+ str(', '.join(SOURCE.columns))+ ') VALUES '+ str(tuple(row.values)))
-    
     return sql_texts
+
+TARGET = """Schema"."Securities"""
